@@ -9,7 +9,7 @@ Flutter side menu (Drawer)
 ### Use `KFDrawer` widget as `Scaffold`'s body with items property (`List<KFDrawerItem>`)
 you should define onPressed on `KFDrawerItem`
 
-### `KFDrawer` properties
+##### `KFDrawer` properties
 * controller (optional)
 * header
 * footer
@@ -20,11 +20,13 @@ you should define onPressed on `KFDrawerItem`
 
 define page property on `KFDrawerItem`
 
-### `KFDrawerController` properties
+##### `KFDrawerController` properties
 * initialPage
 * items
 
-##### Drawer page widget should extend `KFDrawerContent` widget 
+##### Drawer page widget should extend `KFDrawerContent` widget
+
+##### You can use `ClassBuilder` for string based class init
 
 ### Example
 
