@@ -32,6 +32,11 @@ class KFDrawer extends StatefulWidget {
     this.decoration,
     this.drawerWidth,
     this.minScale,
+    this.borderRadius,
+    this.shadowBorderRadius,
+    this.shadowOffset,
+    this.scrollable,
+    this.menuPadding,
   }) : super(key: key);
 
   Widget header;
@@ -41,6 +46,11 @@ class KFDrawer extends StatefulWidget {
   KFDrawerController controller;
   double drawerWidth;
   double minScale;
+  double borderRadius;
+  double shadowBorderRadius;
+  double shadowOffset;
+  bool scrollable;
+  EdgeInsets menuPadding;
 
   @override
   _KFDrawerState createState() => _KFDrawerState();
@@ -52,6 +62,10 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
 
   double _drawerWidth = 0.66;
   double _minScale = 0.86;
+  double _borderRadius = 32.0;
+  double _shadowBorderRadius = 44.0;
+  double _shadowOffset = 16.0;
+  bool _scrollable = false;
 
   Animation<double> animation, scaleAnimation;
   Animation<BorderRadius> radiusAnimation;
@@ -115,8 +129,20 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
     if (widget.minScale != null) {
       _minScale = widget.minScale;
     }
+    if (widget.borderRadius != null) {
+      _borderRadius = widget.borderRadius;
+    }
+    if (widget.shadowOffset != null) {
+      _shadowOffset = widget.shadowOffset;
+    }
+    if (widget.shadowBorderRadius != null) {
+      _shadowBorderRadius = widget.shadowBorderRadius;
+    }
     if (widget.drawerWidth != null) {
       _drawerWidth = widget.drawerWidth;
+    }
+    if (widget.scrollable != null) {
+      _scrollable = widget.scrollable;
     }
     animationController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(animationController)
@@ -127,7 +153,7 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
       });
 
     scaleAnimation = Tween<double>(begin: 1.0, end: _minScale).animate(animationController);
-    radiusAnimation = BorderRadiusTween(begin: BorderRadius.circular(0.0), end: BorderRadius.circular(32.0))
+    radiusAnimation = BorderRadiusTween(begin: BorderRadius.circular(0.0), end: BorderRadius.circular(_borderRadius))
         .animate(CurvedAnimation(parent: animationController, curve: Curves.ease));
   }
 
@@ -159,6 +185,8 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
       child: Stack(
         children: <Widget>[
           _KFDrawer(
+            padding: widget.menuPadding,
+            scrollable: _scrollable,
             animationController: animationController,
             header: widget.header,
             footer: widget.footer,
@@ -177,7 +205,7 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 32.0),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(44.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(_shadowBorderRadius)),
                             child: Container(
                               color: Colors.white.withAlpha(128),
                             ),
@@ -187,7 +215,7 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: animation.value * 16.0),
+                    padding: EdgeInsets.only(left: animation.value * _shadowOffset),
                     child: ClipRRect(
                       borderRadius: radiusAnimation.value,
                       child: Container(
@@ -213,12 +241,23 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
 }
 
 class _KFDrawer extends StatefulWidget {
-  _KFDrawer({Key key, this.animationController, this.header, this.footer, this.items, this.decoration});
+  _KFDrawer({
+    Key key,
+    this.animationController,
+    this.header,
+    this.footer,
+    this.items,
+    this.decoration,
+    this.scrollable,
+    this.padding,
+  });
 
   Widget header;
   Widget footer;
   List<KFDrawerItem> items;
   BoxDecoration decoration;
+  bool scrollable;
+  EdgeInsets padding;
 
   Animation<double> animationController;
 
@@ -227,26 +266,56 @@ class _KFDrawer extends StatefulWidget {
 }
 
 class __KFDrawerState extends State<_KFDrawer> {
+
+  var _padding = EdgeInsets.symmetric(vertical: 64.0);
+
+  Widget _getMenu() {
+    if (widget.scrollable) {
+      return ListView(
+        children: [
+          Container(
+            child: widget.header,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: widget.items,
+          ),
+          widget.footer,
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          Container(
+            child: widget.header,
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: widget.items,
+            ),
+          ),
+          widget.footer,
+        ],
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.padding != null) {
+      _padding = widget.padding;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: widget.decoration,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 64.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              child: widget.header,
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: widget.items,
-              ),
-            ),
-            widget.footer,
-          ],
-        ),
+        padding: _padding,
+        child: _getMenu(),
       ),
     );
   }

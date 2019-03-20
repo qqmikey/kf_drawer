@@ -70,6 +70,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: KFDrawer(
+//        borderRadius: 0.0,
+//        shadowBorderRadius: 0.0,
+//        menuPadding: EdgeInsets.all(0.0),
+//        scrollable: true,
         controller: _drawerController,
         header: Align(
           alignment: Alignment.centerLeft,
