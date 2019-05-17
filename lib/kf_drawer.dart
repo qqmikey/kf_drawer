@@ -163,23 +163,29 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
     widget.controller.close = _close;
     widget.controller.open = _open;
 
-    return GestureDetector(
-      onHorizontalDragStart: (DragStartDetails details) async {
+    return Listener(
+      onPointerDown: (PointerDownEvent event) {
         setState(() {
           _isDraggingMenu =
-              (_menuOpened && details.globalPosition.dx / MediaQuery.of(context).size.width >= _drawerWidth) ||
-                  (!_menuOpened && details.globalPosition.dx <= 8.0);
+              (_menuOpened && event.position.dx / MediaQuery
+                  .of(context)
+                  .size
+                  .width >= _drawerWidth) ||
+                  (!_menuOpened && event.position.dx <= 8.0);
         });
       },
-      onHorizontalDragUpdate: (DragUpdateDetails details) async {
+      onPointerMove: (PointerMoveEvent event) {
         if (_isDraggingMenu) {
-          animationController.value = details.globalPosition.dx / MediaQuery.of(context).size.width;
+          animationController.value = event.position.dx / MediaQuery
+              .of(context)
+              .size
+              .width;
         }
       },
-      onHorizontalDragEnd: (DragEndDetails details) async {
+      onPointerUp: (PointerUpEvent event) {
         _finishDrawerAnimation();
       },
-      onHorizontalDragCancel: () async {
+      onPointerCancel: (PointerCancelEvent event) {
         _finishDrawerAnimation();
       },
       child: Stack(
@@ -196,7 +202,10 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
           Transform.scale(
             scale: scaleAnimation.value,
             child: Transform.translate(
-              offset: Offset((MediaQuery.of(context).size.width * _drawerWidth) * animation.value, 0.0),
+              offset: Offset((MediaQuery
+                  .of(context)
+                  .size
+                  .width * _drawerWidth) * animation.value, 0.0),
               child: Stack(
                 children: <Widget>[
                   Column(
