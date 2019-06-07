@@ -37,6 +37,7 @@ class KFDrawer extends StatefulWidget {
     this.shadowOffset,
     this.scrollable,
     this.menuPadding,
+    this.disableContentTap,
   }) : super(key: key);
 
   Widget header;
@@ -51,6 +52,7 @@ class KFDrawer extends StatefulWidget {
   double shadowOffset;
   bool scrollable;
   EdgeInsets menuPadding;
+  bool disableContentTap;
 
   @override
   _KFDrawerState createState() => _KFDrawerState();
@@ -66,6 +68,7 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   double _shadowBorderRadius = 44.0;
   double _shadowOffset = 16.0;
   bool _scrollable = false;
+  bool _disableContentTap = true;
 
   Animation<double> animation, scaleAnimation;
   Animation<BorderRadius> radiusAnimation;
@@ -144,6 +147,9 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
     if (widget.scrollable != null) {
       _scrollable = widget.scrollable;
     }
+    if (widget.disableContentTap != null) {
+      _disableContentTap = widget.disableContentTap;
+    }
     animationController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(animationController)
       ..addListener(() {
@@ -165,14 +171,25 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
 
     return Listener(
       onPointerDown: (PointerDownEvent event) {
-        setState(() {
-          _isDraggingMenu =
-              (_menuOpened && event.position.dx / MediaQuery
-                  .of(context)
-                  .size
-                  .width >= _drawerWidth) ||
-                  (!_menuOpened && event.position.dx <= 8.0);
-        });
+        if (_disableContentTap) {
+          if (_menuOpened && event.position.dx / MediaQuery
+              .of(context)
+              .size
+              .width >= _drawerWidth) {
+            _close();
+          } else {
+            setState(() {
+              _isDraggingMenu = (!_menuOpened && event.position.dx <= 8.0);
+            });
+          }
+        } else {
+          setState(() {
+            _isDraggingMenu = (_menuOpened && event.position.dx / MediaQuery
+                .of(context)
+                .size
+                .width >= _drawerWidth) || (!_menuOpened && event.position.dx <= 8.0);
+          });
+        }
       },
       onPointerMove: (PointerMoveEvent event) {
         if (_isDraggingMenu) {
@@ -206,34 +223,37 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
                   .of(context)
                   .size
                   .width * _drawerWidth) * animation.value, 0.0),
-              child: Stack(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 32.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(_shadowBorderRadius)),
-                            child: Container(
-                              color: Colors.white.withAlpha(128),
+              child: AbsorbPointer(
+                absorbing: _menuOpened && _disableContentTap,
+                child: Stack(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 32.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(_shadowBorderRadius)),
+                              child: Container(
+                                color: Colors.white.withAlpha(128),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: animation.value * _shadowOffset),
-                    child: ClipRRect(
-                      borderRadius: radiusAnimation.value,
-                      child: Container(
-                        color: Colors.white,
-                        child: widget.controller.page,
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: animation.value * _shadowOffset),
+                      child: ClipRRect(
+                        borderRadius: radiusAnimation.value,
+                        child: Container(
+                          color: Colors.white,
+                          child: widget.controller.page,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
