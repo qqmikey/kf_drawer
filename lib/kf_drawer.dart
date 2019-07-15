@@ -20,6 +20,11 @@ class KFDrawerContent extends StatefulWidget {
   State<StatefulWidget> createState() {
     return null;
   }
+
+  static KFDrawerContent of(BuildContext context) {
+    return (context.rootAncestorStateOfType(const TypeMatcher<KFDrawerContent>()) as KFDrawerContent);
+  }
+
 }
 
 class KFDrawer extends StatefulWidget {
