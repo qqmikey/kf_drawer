@@ -13,6 +13,7 @@ class KFDrawerController {
   KFDrawerContent page;
 }
 
+// ignore: must_be_immutable
 class KFDrawerContent extends StatefulWidget {
   Function onMenuPressed;
 
