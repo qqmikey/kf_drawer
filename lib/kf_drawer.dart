@@ -87,7 +87,11 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
       _menuOpened = false;
     });
   }
-
+click(){
+    setState(() {
+ var x=  bool;
+    });
+}
   _onMenuPressed() {
     _menuOpened ? _close() : _open();
   }
@@ -118,8 +122,10 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
             widget.controller.page = item.page;
             widget.controller.close();
           };
+          click();
         }
         item.page.onMenuPressed = _onMenuPressed;
+
         return item;
       }).toList();
     }
