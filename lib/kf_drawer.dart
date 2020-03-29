@@ -113,11 +113,13 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   List<KFDrawerItem> _getDrawerItems() {
     if (widget.controller.items != null) {
       return widget.controller.items.map((KFDrawerItem item) {
-
+        if (item.onPressed == null) {
           item.onPressed = () {
             widget.controller.page = item.page;
             widget.controller.close();
-        };
+            item.click();
+          };
+        }
         item.page.onMenuPressed = _onMenuPressed;
 
         return item;
@@ -352,10 +354,10 @@ class __KFDrawerState extends State<_KFDrawer> {
 
 class KFDrawerItem extends StatelessWidget {
 
-  KFDrawerItem({this.onPressed, this.text, this.icon});
+  KFDrawerItem({this.click,this.onPressed, this.text, this.icon});
 
-  KFDrawerItem.initWithPage({this.onPressed,this.text, this.icon, this.alias, this.page});
-
+  KFDrawerItem.initWithPage({this.click,this.onPressed,this.text, this.icon, this.alias, this.page});
+Function click;
   Function onPressed;
   Widget text;
   Widget icon;
