@@ -117,12 +117,9 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
           item.onPressed = () {
             widget.controller.page = item.page;
             widget.controller.close();
-            item.click();
-          };
 
-        }else {
-          widget.controller.page = item.page;
-          widget.controller.close();
+          };
+          item.click();
         }
         item.page.onMenuPressed = _onMenuPressed;
 
