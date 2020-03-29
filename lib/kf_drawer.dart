@@ -351,35 +351,40 @@ class __KFDrawerState extends State<_KFDrawer> {
 }
 
 class KFDrawerItem extends StatelessWidget {
-  KFDrawerItem({this.onPressed, this.text, this.icon});
+
+  KFDrawerItem({this.onPressed, this.text, this.icon,this.click});
 
   KFDrawerItem.initWithPage({this.onPressed, this.text, this.icon, this.alias, this.page});
 
   Function onPressed;
   Widget text;
   Widget icon;
-
+  Function click;
   String alias;
   KFDrawerContent page;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 2.0),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: 16.0, right: 8.0),
-                  child: icon,
-                ),
-                text,
-              ],
+    return new InkWell(
+      onTap: click,
+      child:  Container(
+        padding: EdgeInsets.symmetric(vertical: 2.0),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onPressed,
+
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(left: 16.0, right: 8.0),
+                    child: icon,
+                  ),
+                  text,
+                ],
+              ),
             ),
           ),
         ),
