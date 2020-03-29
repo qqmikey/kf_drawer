@@ -354,7 +354,7 @@ class KFDrawerItem extends StatelessWidget {
 
   KFDrawerItem({this.onPressed, this.text, this.icon,this.click});
 
-  KFDrawerItem.initWithPage({this.onPressed, this.text, this.icon, this.alias, this.page});
+  KFDrawerItem.initWithPage({this.onPressed,this.click,this.text, this.icon, this.alias, this.page});
 
   Function onPressed;
   Widget text;
