@@ -113,13 +113,17 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   List<KFDrawerItem> _getDrawerItems() {
     if (widget.controller.items != null) {
       return widget.controller.items.map((KFDrawerItem item) {
-
+        if (item.onPressed == null) {
           item.onPressed = () {
             widget.controller.page = item.page;
             widget.controller.close();
+            item.click();
           };
 
-
+        }else {
+          widget.controller.page = item.page;
+          widget.controller.close();
+        }
         item.page.onMenuPressed = _onMenuPressed;
 
         return item;
@@ -367,7 +371,10 @@ class KFDrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return new InkWell(
+      onTap: click,
+      child:  Container(
+
         padding: EdgeInsets.symmetric(vertical: 2.0),
         child: Material(
           color: Colors.transparent,
@@ -388,7 +395,7 @@ class KFDrawerItem extends StatelessWidget {
             ),
           ),
         ),
-      );
-
+      ),
+    );
   }
 }
