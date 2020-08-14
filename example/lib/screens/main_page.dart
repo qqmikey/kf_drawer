@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
+// ignore: must_be_immutable
 class MainPage extends KFDrawerContent {
   MainPage({
     Key key,
