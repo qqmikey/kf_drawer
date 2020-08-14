@@ -118,9 +118,11 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
           item.onPressed = () {
             widget.controller.page = item.page;
             widget.controller.close();
+            item.click();
           };
         }
         item.page.onMenuPressed = _onMenuPressed;
+
         return item;
       }).toList();
     }
@@ -352,39 +354,41 @@ class __KFDrawerState extends State<_KFDrawer> {
 }
 
 class KFDrawerItem extends StatelessWidget {
-  KFDrawerItem({this.onPressed, this.text, this.icon});
 
-  KFDrawerItem.initWithPage({this.onPressed, this.text, this.icon, this.alias, this.page});
+  KFDrawerItem({this.click,this.onPressed, this.text, this.icon});
 
+  KFDrawerItem.initWithPage({this.click,this.onPressed,this.text, this.icon, this.alias, this.page});
+Function click;
   Function onPressed;
   Widget text;
   Widget icon;
-
   String alias;
   KFDrawerContent page;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 2.0),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: 16.0, right: 8.0),
-                  child: icon,
-                ),
-                text,
-              ],
+    return new  Container(
+
+        padding: EdgeInsets.symmetric(vertical: 2.0),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onPressed,
+
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(left: 16.0, right: 8.0),
+                    child: icon,
+                  ),
+                  text,
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
