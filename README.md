@@ -6,6 +6,11 @@ Flutter side menu (Drawer)
 
 # Getting Started
 
+How to use: Add it in your pubspec.yaml file.
+
+`kf_drawer: ^0.0.2`
+
+
 ### Use `KFDrawer` widget as `Scaffold`'s body with items property (`List<KFDrawerItem>`)
 you should define onPressed on `KFDrawerItem`
 
