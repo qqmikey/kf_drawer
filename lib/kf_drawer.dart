@@ -3,32 +3,32 @@ library kf_drawer;
 import 'package:flutter/material.dart';
 
 class KFDrawerController {
-  KFDrawerController({this.items, @required KFDrawerContent initialPage}) {
+  KFDrawerController({this.items = const [], required KFDrawerContent initialPage}) {
     this.page = initialPage;
   }
 
   List<KFDrawerItem> items;
-  Function close;
-  Function open;
-  KFDrawerContent page;
+  Function? close;
+  Function? open;
+  KFDrawerContent? page;
 }
 
 // ignore: must_be_immutable
 class KFDrawerContent extends StatefulWidget {
-  Function onMenuPressed;
+  VoidCallback? onMenuPressed;
 
   @override
   State<StatefulWidget> createState() {
-    return null;
+    throw UnimplementedError();
   }
 }
 
 class KFDrawer extends StatefulWidget {
   KFDrawer({
-    Key key,
+    Key? key,
     this.header,
     this.footer,
-    this.items,
+    this.items = const [],
     this.controller,
     this.decoration,
     this.drawerWidth,
@@ -36,23 +36,23 @@ class KFDrawer extends StatefulWidget {
     this.borderRadius,
     this.shadowBorderRadius,
     this.shadowOffset,
-    this.scrollable,
+    this.scrollable = true,
     this.menuPadding,
-    this.disableContentTap,
+    this.disableContentTap = true,
   }) : super(key: key);
 
-  Widget header;
-  Widget footer;
-  BoxDecoration decoration;
+  Widget? header;
+  Widget? footer;
+  BoxDecoration? decoration;
   List<KFDrawerItem> items;
-  KFDrawerController controller;
-  double drawerWidth;
-  double minScale;
-  double borderRadius;
-  double shadowBorderRadius;
-  double shadowOffset;
+  KFDrawerController? controller;
+  double? drawerWidth;
+  double? minScale;
+  double? borderRadius;
+  double? shadowBorderRadius;
+  double? shadowOffset;
   bool scrollable;
-  EdgeInsets menuPadding;
+  EdgeInsets? menuPadding;
   bool disableContentTap;
 
   @override
@@ -71,9 +71,9 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   bool _scrollable = false;
   bool _disableContentTap = true;
 
-  Animation<double> animation, scaleAnimation;
-  Animation<BorderRadius> radiusAnimation;
-  AnimationController animationController;
+  late Animation<double> animation, scaleAnimation;
+  late Animation<BorderRadius> radiusAnimation;
+  late AnimationController animationController;
 
   _open() {
     animationController.forward();
@@ -112,15 +112,15 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   }
 
   List<KFDrawerItem> _getDrawerItems() {
-    if (widget.controller.items != null) {
-      return widget.controller.items.map((KFDrawerItem item) {
+    if (widget.controller?.items != null) {
+      return widget.controller!.items.map((KFDrawerItem item) {
         if (item.onPressed == null) {
           item.onPressed = () {
-            widget.controller.page = item.page;
-            widget.controller.close();
+            widget.controller!.page = item.page;
+            if (widget.controller!.close != null) widget.controller!.close!();
           };
         }
-        item.page.onMenuPressed = _onMenuPressed;
+        item.page?.onMenuPressed = _onMenuPressed;
         return item;
       }).toList();
     }
@@ -131,24 +131,24 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     if (widget.minScale != null) {
-      _minScale = widget.minScale;
+      _minScale = widget.minScale!;
     }
     if (widget.borderRadius != null) {
-      _borderRadius = widget.borderRadius;
+      _borderRadius = widget.borderRadius!;
     }
     if (widget.shadowOffset != null) {
-      _shadowOffset = widget.shadowOffset;
+      _shadowOffset = widget.shadowOffset!;
     }
     if (widget.shadowBorderRadius != null) {
-      _shadowBorderRadius = widget.shadowBorderRadius;
+      _shadowBorderRadius = widget.shadowBorderRadius!;
     }
     if (widget.drawerWidth != null) {
-      _drawerWidth = widget.drawerWidth;
+      _drawerWidth = widget.drawerWidth!;
     }
-    if (widget.scrollable != null) {
+    if (widget.scrollable) {
       _scrollable = widget.scrollable;
     }
-    if (widget.disableContentTap != null) {
+    if (widget.disableContentTap) {
       _disableContentTap = widget.disableContentTap;
     }
     animationController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
@@ -166,17 +166,14 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    widget.controller.page.onMenuPressed = _onMenuPressed;
-    widget.controller.close = _close;
-    widget.controller.open = _open;
+    widget.controller?.page?.onMenuPressed = _onMenuPressed;
+    widget.controller?.close = _close;
+    widget.controller?.open = _open;
 
     return Listener(
       onPointerDown: (PointerDownEvent event) {
         if (_disableContentTap) {
-          if (_menuOpened && event.position.dx / MediaQuery
-              .of(context)
-              .size
-              .width >= _drawerWidth) {
+          if (_menuOpened && event.position.dx / MediaQuery.of(context).size.width >= _drawerWidth) {
             _close();
           } else {
             setState(() {
@@ -185,19 +182,14 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
           }
         } else {
           setState(() {
-            _isDraggingMenu = (_menuOpened && event.position.dx / MediaQuery
-                .of(context)
-                .size
-                .width >= _drawerWidth) || (!_menuOpened && event.position.dx <= 8.0);
+            _isDraggingMenu = (_menuOpened && event.position.dx / MediaQuery.of(context).size.width >= _drawerWidth) ||
+                (!_menuOpened && event.position.dx <= 8.0);
           });
         }
       },
       onPointerMove: (PointerMoveEvent event) {
         if (_isDraggingMenu) {
-          animationController.value = event.position.dx / MediaQuery
-              .of(context)
-              .size
-              .width;
+          animationController.value = event.position.dx / MediaQuery.of(context).size.width;
         }
       },
       onPointerUp: (PointerUpEvent event) {
@@ -220,10 +212,7 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
           Transform.scale(
             scale: scaleAnimation.value,
             child: Transform.translate(
-              offset: Offset((MediaQuery
-                  .of(context)
-                  .size
-                  .width * _drawerWidth) * animation.value, 0.0),
+              offset: Offset((MediaQuery.of(context).size.width * _drawerWidth) * animation.value, 0.0),
               child: AbsorbPointer(
                 absorbing: _menuOpened && _disableContentTap,
                 child: Stack(
@@ -249,7 +238,7 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
                         borderRadius: radiusAnimation.value,
                         child: Container(
                           color: Colors.white,
-                          child: widget.controller.page,
+                          child: widget.controller?.page,
                         ),
                       ),
                     ),
@@ -272,31 +261,30 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
 
 class _KFDrawer extends StatefulWidget {
   _KFDrawer({
-    Key key,
+    Key? key,
     this.animationController,
     this.header,
     this.footer,
-    this.items,
+    this.items = const [],
     this.decoration,
-    this.scrollable,
+    this.scrollable = true,
     this.padding,
-  });
+  }) : super(key: key);
 
-  Widget header;
-  Widget footer;
+  Widget? header;
+  Widget? footer;
   List<KFDrawerItem> items;
-  BoxDecoration decoration;
+  BoxDecoration? decoration;
   bool scrollable;
-  EdgeInsets padding;
+  EdgeInsets? padding;
 
-  Animation<double> animationController;
+  Animation<double>? animationController;
 
   @override
   __KFDrawerState createState() => __KFDrawerState();
 }
 
 class __KFDrawerState extends State<_KFDrawer> {
-
   var _padding = EdgeInsets.symmetric(vertical: 64.0);
 
   Widget _getMenu() {
@@ -310,7 +298,7 @@ class __KFDrawerState extends State<_KFDrawer> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: widget.items,
           ),
-          widget.footer,
+          if (widget.footer != null) widget.footer!,
         ],
       );
     } else {
@@ -325,7 +313,7 @@ class __KFDrawerState extends State<_KFDrawer> {
               children: widget.items,
             ),
           ),
-          widget.footer,
+          if (widget.footer != null) widget.footer!,
         ],
       );
     }
@@ -335,7 +323,7 @@ class __KFDrawerState extends State<_KFDrawer> {
   void initState() {
     super.initState();
     if (widget.padding != null) {
-      _padding = widget.padding;
+      _padding = widget.padding!;
     }
   }
 
@@ -356,12 +344,12 @@ class KFDrawerItem extends StatelessWidget {
 
   KFDrawerItem.initWithPage({this.onPressed, this.text, this.icon, this.alias, this.page});
 
-  Function onPressed;
-  Widget text;
-  Widget icon;
+  GestureTapCallback? onPressed;
+  Widget? text;
+  Widget? icon;
 
-  String alias;
-  KFDrawerContent page;
+  String? alias;
+  KFDrawerContent? page;
 
   @override
   Widget build(BuildContext context) {
@@ -379,7 +367,7 @@ class KFDrawerItem extends StatelessWidget {
                   padding: EdgeInsets.only(left: 16.0, right: 8.0),
                   child: icon,
                 ),
-                text,
+                if (text != null) text!,
               ],
             ),
           ),

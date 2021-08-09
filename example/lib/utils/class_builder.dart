@@ -7,7 +7,7 @@ typedef T Constructor<T>();
 final Map<String, Constructor<Object>> _constructors = <String, Constructor<Object>>{};
 
 void register<T>(Constructor<T> constructor) {
-  _constructors[T.toString()] = constructor;
+  _constructors[T.toString()] = constructor as Constructor<Object>;
 }
 
 class ClassBuilder {
@@ -18,6 +18,6 @@ class ClassBuilder {
   }
 
   static dynamic fromString(String type) {
-    return _constructors[type]();
+    if (_constructors[type] != null) return _constructors[type]!();
   }
 }

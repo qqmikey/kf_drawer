@@ -3,9 +3,7 @@ import 'package:kf_drawer/kf_drawer.dart';
 
 // ignore: must_be_immutable
 class MainPage extends KFDrawerContent {
-  MainPage({
-    Key key,
-  });
+  MainPage({Key? key});
 
   @override
   _MainPageState createState() => _MainPageState();

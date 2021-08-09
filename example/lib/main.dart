@@ -26,15 +26,14 @@ class MyApp extends StatelessWidget {
 }
 
 class MainWidget extends StatefulWidget {
-  MainWidget({Key key, this.title}) : super(key: key);
-  final String title;
+  MainWidget({Key? key}) : super(key: key);
 
   @override
   _MainWidgetState createState() => _MainWidgetState();
 }
 
 class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
-  KFDrawerController _drawerController;
+  late KFDrawerController _drawerController;
 
   @override
   void initState() {
