@@ -72,7 +72,7 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   bool _disableContentTap = true;
 
   late Animation<double> animation, scaleAnimation;
-  late Animation<BorderRadius> radiusAnimation;
+  late Animation<BorderRadius?> radiusAnimation;
   late AnimationController animationController;
 
   _open() {
