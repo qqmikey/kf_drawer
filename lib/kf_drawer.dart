@@ -72,7 +72,7 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   bool _disableContentTap = true;
 
   late Animation<double> animation, scaleAnimation;
-  late Animation<BorderRadius?> radiusAnimation;
+  late Animation<BorderRadiusGeometry> radiusAnimation;
   late AnimationController animationController;
 
   _open() {
@@ -160,7 +160,7 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
       });
 
     scaleAnimation = Tween<double>(begin: 1.0, end: _minScale).animate(animationController);
-    radiusAnimation = BorderRadiusTween(begin: BorderRadius.circular(0.0), end: BorderRadius.circular(_borderRadius))
+    radiusAnimation = Tween<BorderRadiusGeometry>(begin: BorderRadius.circular(0.0), end: BorderRadius.circular(_borderRadius))
         .animate(CurvedAnimation(parent: animationController, curve: Curves.ease));
   }
 
