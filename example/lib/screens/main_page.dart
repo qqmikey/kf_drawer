@@ -12,37 +12,40 @@ class MainPage extends KFDrawerContent {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                  child: Material(
-                    shadowColor: Colors.transparent,
-                    color: Colors.transparent,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.menu,
-                        color: Colors.black,
+    return Container(
+      color: Color(0xFFC8E2FF),
+      child: SafeArea(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                    child: Material(
+                      shadowColor: Colors.transparent,
+                      color: Colors.transparent,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.menu,
+                          color: Colors.black,
+                        ),
+                        onPressed: widget.onMenuPressed,
                       ),
-                      onPressed: widget.onMenuPressed,
                     ),
                   ),
-                ),
-              ],
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('Main'),
                 ],
               ),
-            ),
-          ],
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Main'),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
