@@ -3,7 +3,7 @@ import 'package:kf_drawer/kf_drawer.dart';
 
 class CalendarPage extends KFDrawerContent {
   @override
-  _CalendarPageState createState() => _CalendarPageState();
+  State<CalendarPage> createState() => _CalendarPageState();
 }
 
 class _CalendarPageState extends State<CalendarPage> {

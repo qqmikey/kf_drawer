@@ -13,7 +13,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,10 +28,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MainWidget extends StatefulWidget {
-  MainWidget({Key? key}) : super(key: key);
+  const MainWidget({super.key});
 
   @override
-  _MainWidgetState createState() => _MainWidgetState();
+  State<MainWidget> createState() => _MainWidgetState();
 }
 
 class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {

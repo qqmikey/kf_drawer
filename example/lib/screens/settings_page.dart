@@ -4,7 +4,7 @@ import 'package:kf_drawer/kf_drawer.dart';
 // ignore: must_be_immutable
 class SettingsPage extends KFDrawerContent {
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
