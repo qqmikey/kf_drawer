@@ -13,17 +13,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MainWidget(),
-    );
+    return MaterialApp(theme: ThemeData(primarySwatch: Colors.blue), home: MainWidget());
   }
 }
 
@@ -49,60 +43,51 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           page: MainPage(),
         ),
         KFDrawerItem.initWithPage(
-          text: Text(
-            'CALENDAR',
-            style: TextStyle(color: Colors.white),
-          ),
+          text: Text('CALENDAR', style: TextStyle(color: Colors.white)),
           icon: Icon(Icons.calendar_today, color: Colors.white),
           page: CalendarPage(),
         ),
         KFDrawerItem.initWithPage(
-          text: Text(
-            'SETTINGS',
-            style: TextStyle(color: Colors.white),
-          ),
+          text: Text('SETTINGS', style: TextStyle(color: Colors.white)),
           icon: Icon(Icons.settings, color: Colors.white),
           page: ClassBuilder.fromString('SettingsPage'),
         ),
       ],
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: KFDrawer(
-//        borderRadius: 0.0,
-//        shadowBorderRadius: 0.0,
-//        menuPadding: EdgeInsets.all(0.0),
-//        scrollable: true,
+        //        borderRadius: 0.0,
+        //        shadowBorderRadius: 0.0,
+        //        menuPadding: EdgeInsets.all(0.0),
+        //        scrollable: true,
         controller: _drawerController,
+        animationDuration: Duration(milliseconds: 280),
+        slideCurve: Curves.easeInOutCubic,
+        scaleCurve: Curves.easeInOutBack,
         header: Align(
           alignment: Alignment.centerLeft,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             width: MediaQuery.of(context).size.width * 0.6,
-            child: Image.asset(
-              'assets/logo.png',
-              alignment: Alignment.centerLeft,
-            ),
+            child: Image.asset('assets/logo.png', alignment: Alignment.centerLeft),
           ),
         ),
         footer: KFDrawerItem(
-          text: Text(
-            'SIGN IN',
-            style: TextStyle(color: Colors.white),
-          ),
-          icon: Icon(
-            Icons.input,
-            color: Colors.white,
-          ),
+          text: Text('SIGN IN', style: TextStyle(color: Colors.white)),
+          icon: Icon(Icons.input, color: Colors.white),
           onPressed: () {
-            Navigator.of(context).push(CupertinoPageRoute(
-              fullscreenDialog: true,
-              builder: (BuildContext context) {
-                return AuthPage();
-              },
-            ));
+            Navigator.of(context).push(
+              CupertinoPageRoute(
+                fullscreenDialog: true,
+                builder: (BuildContext context) {
+                  return AuthPage();
+                },
+              ),
+            );
           },
         ),
         decoration: BoxDecoration(

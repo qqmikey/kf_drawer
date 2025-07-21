@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
 class CalendarPage extends KFDrawerContent {
+  CalendarPage({super.key});
+
   @override
   State<CalendarPage> createState() => _CalendarPageState();
 }
@@ -22,24 +24,13 @@ class _CalendarPageState extends State<CalendarPage> {
                     child: Material(
                       shadowColor: Colors.transparent,
                       color: Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.menu,
-                          color: Colors.black,
-                        ),
-                        onPressed: widget.onMenuPressed,
-                      ),
+                      child: IconButton(icon: Icon(Icons.menu, color: Colors.black), onPressed: widget.onMenuPressed),
                     ),
                   ),
                 ],
               ),
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Calendar'),
-                  ],
-                ),
+                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[Text('Calendar')]),
               ),
             ],
           ),

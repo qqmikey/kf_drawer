@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
-// ignore: must_be_immutable
 class MainPage extends KFDrawerContent {
-  MainPage({Key? key});
+  MainPage({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
@@ -25,25 +24,12 @@ class _MainPageState extends State<MainPage> {
                     child: Material(
                       shadowColor: Colors.transparent,
                       color: Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.menu,
-                          color: Colors.black,
-                        ),
-                        onPressed: widget.onMenuPressed,
-                      ),
+                      child: IconButton(icon: Icon(Icons.menu, color: Colors.black), onPressed: widget.onMenuPressed),
                     ),
                   ),
                 ],
               ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Main'),
-                  ],
-                ),
-              ),
+              Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[Text('Main')])),
             ],
           ),
         ),

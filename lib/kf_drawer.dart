@@ -15,6 +15,8 @@ class KFDrawerController {
 
 // ignore: must_be_immutable
 class KFDrawerContent extends StatefulWidget {
+  KFDrawerContent({Key? key, this.onMenuPressed}) : super(key: key);
+
   VoidCallback? onMenuPressed;
 
   @override
@@ -39,6 +41,9 @@ class KFDrawer extends StatefulWidget {
     this.scrollable = true,
     this.menuPadding,
     this.disableContentTap = true,
+    this.animationDuration = const Duration(milliseconds: 280),
+    this.slideCurve = Curves.easeInOutCubic,
+    this.scaleCurve = Curves.easeInOutBack,
   }) : super(key: key);
 
   Widget? header;
@@ -54,6 +59,9 @@ class KFDrawer extends StatefulWidget {
   bool scrollable;
   EdgeInsets? menuPadding;
   bool disableContentTap;
+  Duration animationDuration;
+  Curve slideCurve;
+  Curve scaleCurve;
 
   @override
   _KFDrawerState createState() => _KFDrawerState();
@@ -151,20 +159,20 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
     if (widget.disableContentTap) {
       _disableContentTap = widget.disableContentTap;
     }
-    animationController = AnimationController(duration: const Duration(milliseconds: 280), vsync: this);
+    animationController = AnimationController(duration: widget.animationDuration, vsync: this);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: animationController, curve: Curves.easeInOutCubic),
+      CurvedAnimation(parent: animationController, curve: widget.slideCurve),
     )..addListener(() {
-        setState(() {
-          // The state that has changed here is the animation object’s value.
-        });
+        setState(() {});
       });
 
     scaleAnimation = Tween<double>(begin: 1.0, end: _minScale).animate(
-      CurvedAnimation(parent: animationController, curve: Curves.easeInOutBack),
+      CurvedAnimation(parent: animationController, curve: widget.scaleCurve),
     );
-    radiusAnimation = BorderRadiusTween(begin: BorderRadius.circular(0.0), end: BorderRadius.circular(_borderRadius))
-        .animate(CurvedAnimation(parent: animationController, curve: Curves.ease));
+    radiusAnimation = BorderRadiusTween(
+      begin: BorderRadius.circular(0.0),
+      end: BorderRadius.circular(_borderRadius),
+    ).animate(CurvedAnimation(parent: animationController, curve: Curves.ease));
   }
 
   @override
@@ -281,7 +289,7 @@ class _KFDrawer extends StatefulWidget {
   bool scrollable;
   EdgeInsets? padding;
 
-  Animation<double>? animationController;
+  AnimationController? animationController;
 
   @override
   __KFDrawerState createState() => __KFDrawerState();
