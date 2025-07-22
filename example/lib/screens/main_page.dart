@@ -24,7 +24,7 @@ class _MainPageState extends State<MainPage> {
                     child: Material(
                       shadowColor: Colors.transparent,
                       color: Colors.transparent,
-                      child: IconButton(icon: Icon(Icons.menu, color: Colors.black), onPressed: widget.onMenuPressed),
+                      child: IconButton(icon: Icon(Icons.menu, color: Colors.black), onPressed: () => KFDrawer.of(context)?.toggle()),
                     ),
                   ),
                 ],

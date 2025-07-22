@@ -10,6 +10,7 @@ class KFDrawerController {
   List<KFDrawerItem> items;
   Function? close;
   Function? open;
+  Function? toggle;
   KFDrawerContent? page;
 }
 
@@ -63,8 +64,21 @@ class KFDrawer extends StatefulWidget {
   Curve slideCurve;
   Curve scaleCurve;
 
+  static _KFDrawerState? of(BuildContext context) {
+    final _KFDrawerInherited? inherited = context.dependOnInheritedWidgetOfExactType<_KFDrawerInherited>();
+    return inherited?.drawerState;
+  }
+
   @override
   _KFDrawerState createState() => _KFDrawerState();
+}
+
+class _KFDrawerInherited extends InheritedWidget {
+  final _KFDrawerState drawerState;
+  const _KFDrawerInherited({required Widget child, required this.drawerState}) : super(child: child);
+
+  @override
+  bool updateShouldNotify(_KFDrawerInherited oldWidget) => false;
 }
 
 class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
@@ -128,7 +142,6 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
             if (widget.controller!.close != null) widget.controller!.close!();
           };
         }
-        item.page?.onMenuPressed = _onMenuPressed;
         return item;
       }).toList();
     }
@@ -180,88 +193,96 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
     widget.controller?.page?.onMenuPressed = _onMenuPressed;
     widget.controller?.close = _close;
     widget.controller?.open = _open;
+    widget.controller?.toggle = toggle;
 
-    return Listener(
-      onPointerDown: (PointerDownEvent event) {
-        if (_disableContentTap) {
-          if (_menuOpened && event.position.dx / MediaQuery.of(context).size.width >= _drawerWidth) {
-            _close();
+    return _KFDrawerInherited(
+      drawerState: this,
+      child: Listener(
+        onPointerDown: (PointerDownEvent event) {
+          if (_disableContentTap) {
+            if (_menuOpened && event.position.dx / MediaQuery.of(context).size.width >= _drawerWidth) {
+              _close();
+            } else {
+              setState(() {
+                _isDraggingMenu = (!_menuOpened && event.position.dx <= 8.0);
+              });
+            }
           } else {
             setState(() {
-              _isDraggingMenu = (!_menuOpened && event.position.dx <= 8.0);
+              _isDraggingMenu = (_menuOpened && event.position.dx / MediaQuery.of(context).size.width >= _drawerWidth) ||
+                  (!_menuOpened && event.position.dx <= 8.0);
             });
           }
-        } else {
-          setState(() {
-            _isDraggingMenu = (_menuOpened && event.position.dx / MediaQuery.of(context).size.width >= _drawerWidth) ||
-                (!_menuOpened && event.position.dx <= 8.0);
-          });
-        }
-      },
-      onPointerMove: (PointerMoveEvent event) {
-        if (_isDraggingMenu) {
-          animationController.value = event.position.dx / MediaQuery.of(context).size.width;
-        }
-      },
-      onPointerUp: (PointerUpEvent event) {
-        _finishDrawerAnimation();
-      },
-      onPointerCancel: (PointerCancelEvent event) {
-        _finishDrawerAnimation();
-      },
-      child: Stack(
-        children: <Widget>[
-          _KFDrawer(
-            padding: widget.menuPadding,
-            scrollable: _scrollable,
-            animationController: animationController,
-            header: widget.header,
-            footer: widget.footer,
-            items: _getDrawerItems(),
-            decoration: widget.decoration,
-          ),
-          Transform.scale(
-            scale: scaleAnimation.value,
-            child: Transform.translate(
-              offset: Offset((MediaQuery.of(context).size.width * _drawerWidth) * animation.value, 0.0),
-              child: AbsorbPointer(
-                absorbing: _menuOpened && _disableContentTap,
-                child: Stack(
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 32.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.all(Radius.circular(_shadowBorderRadius)),
-                              child: Container(
-                                color: Colors.white.withAlpha(128),
+        },
+        onPointerMove: (PointerMoveEvent event) {
+          if (_isDraggingMenu) {
+            animationController.value = event.position.dx / MediaQuery.of(context).size.width;
+          }
+        },
+        onPointerUp: (PointerUpEvent event) {
+          _finishDrawerAnimation();
+        },
+        onPointerCancel: (PointerCancelEvent event) {
+          _finishDrawerAnimation();
+        },
+        child: Stack(
+          children: <Widget>[
+            _KFDrawer(
+              padding: widget.menuPadding,
+              scrollable: _scrollable,
+              animationController: animationController,
+              header: widget.header,
+              footer: widget.footer,
+              items: _getDrawerItems(),
+              decoration: widget.decoration,
+            ),
+            Transform.scale(
+              scale: scaleAnimation.value,
+              child: Transform.translate(
+                offset: Offset((MediaQuery.of(context).size.width * _drawerWidth) * animation.value, 0.0),
+                child: AbsorbPointer(
+                  absorbing: _menuOpened && _disableContentTap,
+                  child: Stack(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 32.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(Radius.circular(_shadowBorderRadius)),
+                                child: Container(
+                                  color: Colors.white.withAlpha(128),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: animation.value * _shadowOffset),
-                      child: ClipRRect(
-                        borderRadius: radiusAnimation.value ?? BorderRadius.zero,
-                        child: Container(
-                          color: Colors.white,
-                          child: widget.controller?.page,
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: animation.value * _shadowOffset),
+                        child: ClipRRect(
+                          borderRadius: radiusAnimation.value ?? BorderRadius.zero,
+                          child: Container(
+                            color: Colors.white,
+                            child: widget.controller?.page,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+
+  void close() => _close();
+  void open() => _open();
+  void toggle() => _menuOpened ? _close() : _open();
 
   @override
   void dispose() {
