@@ -1,18 +1,11 @@
 library kf_drawer;
 
+export 'kf_drawer_item.dart';
+export 'kf_drawer_controller.dart';
+
 import 'package:flutter/material.dart';
-
-class KFDrawerController {
-  KFDrawerController({this.items = const [], required Widget initialPage}) {
-    this.page = initialPage;
-  }
-
-  List<KFDrawerItem> items;
-  Function? close;
-  Function? open;
-  Function? toggle;
-  Widget? page;
-}
+import 'kf_drawer_item.dart';
+import 'kf_drawer_controller.dart';
 
 class KFDrawer extends StatefulWidget {
   KFDrawer({
@@ -59,15 +52,6 @@ class KFDrawer extends StatefulWidget {
 
   @override
   _KFDrawerState createState() => _KFDrawerState();
-}
-
-class _KFDrawerInherited extends InheritedWidget {
-  final _KFDrawerState drawerState;
-
-  const _KFDrawerInherited({required Widget child, required this.drawerState}) : super(child: child);
-
-  @override
-  bool updateShouldNotify(_KFDrawerInherited oldWidget) => false;
 }
 
 class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
@@ -271,6 +255,15 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   }
 }
 
+class _KFDrawerInherited extends InheritedWidget {
+  final _KFDrawerState drawerState;
+
+  const _KFDrawerInherited({required Widget child, required this.drawerState}) : super(child: child);
+
+  @override
+  bool updateShouldNotify(_KFDrawerInherited oldWidget) => false;
+}
+
 class _KFDrawer extends StatefulWidget {
   _KFDrawer({
     Key? key,
@@ -346,65 +339,6 @@ class __KFDrawerState extends State<_KFDrawer> {
       child: Padding(
         padding: _padding,
         child: _getMenu(),
-      ),
-    );
-  }
-}
-
-class KFDrawerItem extends StatelessWidget {
-  const KFDrawerItem({this.onPressed, this.text, this.icon, this.alias, this.page, Key? key}) : super(key: key);
-
-  final GestureTapCallback? onPressed;
-  final Widget? text;
-  final Widget? icon;
-  final String? alias;
-  final Widget? page;
-
-  factory KFDrawerItem.initWithPage({
-    Widget? text,
-    Widget? icon,
-    String? alias,
-    required Widget page,
-  }) {
-    return KFDrawerItem(
-      text: text,
-      icon: icon,
-      alias: alias,
-      page: page,
-      onPressed: null,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 2.0),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed ??
-              (page != null
-                  ? () {
-                      final drawer = KFDrawer.of(context);
-                      if (drawer != null) {
-                        drawer.widget.controller?.page = page;
-                        drawer.close();
-                      }
-                    }
-                  : null),
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: 16.0, right: 8.0),
-                  child: icon,
-                ),
-                if (text != null) text!,
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }
