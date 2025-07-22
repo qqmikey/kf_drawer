@@ -1,3 +1,6 @@
+## [1.3.3] -
+- lower dependencies constraints
+
 ## [1.3.2] -
 - readme update
 
