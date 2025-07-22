@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
-class MainPage extends KFDrawerContent {
-  MainPage({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
   State<MainPage> createState() => _MainPageState();

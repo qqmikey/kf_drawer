@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
 // ignore: must_be_immutable
-class SettingsPage extends KFDrawerContent {
-  SettingsPage({super.key});
+class SettingsPage extends StatefulWidget{
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -25,7 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: Material(
                       shadowColor: Colors.transparent,
                       color: Colors.transparent,
-                      child: IconButton(icon: Icon(Icons.menu, color: Colors.black), onPressed: widget.onMenuPressed),
+                      child: IconButton(icon: Icon(Icons.menu, color: Colors.black), onPressed:  () => KFDrawer.of(context)?.toggle()),
                     ),
                   ),
                 ],

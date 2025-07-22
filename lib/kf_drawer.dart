@@ -3,7 +3,7 @@ library kf_drawer;
 import 'package:flutter/material.dart';
 
 class KFDrawerController {
-  KFDrawerController({this.items = const [], required KFDrawerContent initialPage}) {
+  KFDrawerController({this.items = const [], required Widget initialPage}) {
     this.page = initialPage;
   }
 
@@ -11,20 +11,9 @@ class KFDrawerController {
   Function? close;
   Function? open;
   Function? toggle;
-  KFDrawerContent? page;
+  Widget? page;
 }
 
-// ignore: must_be_immutable
-class KFDrawerContent extends StatefulWidget {
-  KFDrawerContent({Key? key, this.onMenuPressed}) : super(key: key);
-
-  VoidCallback? onMenuPressed;
-
-  @override
-  State<StatefulWidget> createState() {
-    throw UnimplementedError();
-  }
-}
 
 class KFDrawer extends StatefulWidget {
   KFDrawer({
@@ -190,7 +179,6 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    widget.controller?.page?.onMenuPressed = _onMenuPressed;
     widget.controller?.close = _close;
     widget.controller?.open = _open;
     widget.controller?.toggle = toggle;
@@ -381,7 +369,7 @@ class KFDrawerItem extends StatelessWidget {
   Widget? icon;
 
   String? alias;
-  KFDrawerContent? page;
+  Widget? page;
 
   @override
   Widget build(BuildContext context) {
