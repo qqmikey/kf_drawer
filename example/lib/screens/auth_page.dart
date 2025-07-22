@@ -23,10 +23,7 @@ class _AuthPageState extends State<AuthPage> {
                       shadowColor: Colors.transparent,
                       color: Colors.transparent,
                       child: IconButton(
-                        icon: Icon(
-                          Icons.menu,
-                          color: Colors.black,
-                        ),
+                        icon: Icon(Icons.menu, color: Colors.black),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -35,14 +32,7 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                 ],
               ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Sign in'),
-                  ],
-                ),
-              ),
+              Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[Text('Sign in')])),
             ],
           ),
         ),
