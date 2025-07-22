@@ -6,6 +6,12 @@
 
 * Null safety support
 
+## [1.3.0] - 
+- refactor code, split classes to files
+- fix bug with menu tap and page change
+- now work with final onPressed
+- better structure, more clean
+
 ## [1.1.2] - 22.07.2019
 
 * Stable version (pre null safety)
