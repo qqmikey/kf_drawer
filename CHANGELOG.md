@@ -1,3 +1,6 @@
+## [1.3.2] -
+- readme update
+
 ## [1.3.1] -
 - refactor code, split classes to files
 

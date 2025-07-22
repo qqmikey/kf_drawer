@@ -1,5 +1,5 @@
 <a href="https://pub.dartlang.org/packages/kf_drawer#-readme-tab-">
-    <img src="https://github.com/qqmikey/kf_drawer/raw/master/example/drawer_demo.gif" width="200"/>
+    <img src="https://github.com/qqmikey/kf_drawer/raw/main/example/drawer_demo.gif" width="200"/>
 </a>
 
 Flutter side menu (Drawer)
