@@ -122,13 +122,13 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
     }
   }
 
-  List<KFDrawerItem> _getDrawerItems() {
+  List<KFDrawerItem> _getDrawerItems(BuildContext context) {
     if (widget.controller?.items != null) {
       return widget.controller!.items.map((KFDrawerItem item) {
-        if (item.onPressed == null) {
+        if (item.onPressed == null && item.page != null) {
           item.onPressed = () {
             widget.controller!.page = item.page;
-            if (widget.controller!.close != null) widget.controller!.close!();
+            widget.controller!.close?.call();
           };
         }
         return item;
@@ -161,13 +161,15 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
     if (widget.disableContentTap) {
       _disableContentTap = widget.disableContentTap;
     }
-    animationController = AnimationController(duration: widget.animationDuration, vsync: this);
+    animationController = AnimationController(
+      vsync: this,
+      duration: widget.animationDuration,
+    );
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: animationController, curve: widget.slideCurve),
     )..addListener(() {
         setState(() {});
       });
-
     scaleAnimation = Tween<double>(begin: 1.0, end: _minScale).animate(
       CurvedAnimation(parent: animationController, curve: widget.scaleCurve),
     );
@@ -175,14 +177,15 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
       begin: BorderRadius.circular(0.0),
       end: BorderRadius.circular(_borderRadius),
     ).animate(CurvedAnimation(parent: animationController, curve: Curves.ease));
+
+    // Присваиваем методы контроллеру только здесь
+    widget.controller?.open = _open;
+    widget.controller?.close = _close;
+    widget.controller?.toggle = toggle;
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.controller?.close = _close;
-    widget.controller?.open = _open;
-    widget.controller?.toggle = toggle;
-
     return _KFDrawerInherited(
       drawerState: this,
       child: Listener(
@@ -221,7 +224,7 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
               animationController: animationController,
               header: widget.header,
               footer: widget.footer,
-              items: _getDrawerItems(),
+              items: _getDrawerItems(context),
               decoration: widget.decoration,
             ),
             Transform.scale(
