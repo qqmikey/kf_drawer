@@ -1,5 +1,7 @@
-## [1.3.0] - 
+## [1.3.1] -
 - refactor code, split classes to files
+
+## [1.3.0] -
 - fix bug with menu tap and page change
 - now work with final onPressed
 - better structure, more clean
