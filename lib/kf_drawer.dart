@@ -119,18 +119,9 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   }
 
   List<KFDrawerItem> _getDrawerItems(BuildContext context) {
-    if (widget.controller?.items != null) {
-      return widget.controller!.items.map((KFDrawerItem item) {
-        if (item.onPressed == null && item.page != null) {
-          item.onPressed = () {
-            widget.controller!.page = item.page;
-            widget.controller!.close?.call();
-          };
-        }
-        return item;
-      }).toList();
-    }
-    return widget.items;
+    final controller = widget.controller;
+    final items = controller?.items ?? widget.items;
+    return items;
   }
 
   @override
@@ -361,15 +352,28 @@ class __KFDrawerState extends State<_KFDrawer> {
 }
 
 class KFDrawerItem extends StatelessWidget {
-  KFDrawerItem({this.onPressed, this.text, this.icon, this.alias, this.page});
+  const KFDrawerItem({this.onPressed, this.text, this.icon, this.alias, this.page, Key? key}) : super(key: key);
 
-  KFDrawerItem.initWithPage({this.onPressed, this.text, this.icon, this.alias, this.page});
-
-  GestureTapCallback? onPressed;
+  final GestureTapCallback? onPressed;
   final Widget? text;
   final Widget? icon;
   final String? alias;
   final Widget? page;
+
+  factory KFDrawerItem.initWithPage({
+    Widget? text,
+    Widget? icon,
+    String? alias,
+    required Widget page,
+  }) {
+    return KFDrawerItem(
+      text: text,
+      icon: icon,
+      alias: alias,
+      page: page,
+      onPressed: null,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -378,7 +382,16 @@ class KFDrawerItem extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: onPressed,
+          onTap: onPressed ??
+              (page != null
+                  ? () {
+                      final drawer = KFDrawer.of(context);
+                      if (drawer != null) {
+                        drawer.widget.controller?.page = page;
+                        drawer.close();
+                      }
+                    }
+                  : null),
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
             child: Row(
