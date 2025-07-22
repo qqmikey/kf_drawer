@@ -1,13 +1,5 @@
-## [1.3.3] -
-- lower dependencies constraints
-
-## [1.3.2] -
-- readme update
-
-## [1.3.1] -
+## [2.0.0] -
 - refactor code, split classes to files
-
-## [1.3.0] -
 - fix bug with menu tap and page change
 - now work with final onPressed
 - better structure, more clean
