@@ -2,7 +2,7 @@ import '../screens/calendar_page.dart';
 import '../screens/main_page.dart';
 import '../screens/settings_page.dart';
 
-typedef T Constructor<T>();
+typedef Constructor<T> = T Function();
 
 final Map<String, Constructor<Object>> _constructors = <String, Constructor<Object>>{};
 

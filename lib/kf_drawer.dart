@@ -14,7 +14,6 @@ class KFDrawerController {
   Widget? page;
 }
 
-
 class KFDrawer extends StatefulWidget {
   KFDrawer({
     Key? key,
@@ -36,22 +35,22 @@ class KFDrawer extends StatefulWidget {
     this.scaleCurve = Curves.easeInOutBack,
   }) : super(key: key);
 
-  Widget? header;
-  Widget? footer;
-  BoxDecoration? decoration;
-  List<KFDrawerItem> items;
-  KFDrawerController? controller;
-  double? drawerWidth;
-  double? minScale;
-  double? borderRadius;
-  double? shadowBorderRadius;
-  double? shadowOffset;
-  bool scrollable;
-  EdgeInsets? menuPadding;
-  bool disableContentTap;
-  Duration animationDuration;
-  Curve slideCurve;
-  Curve scaleCurve;
+  final Widget? header;
+  final Widget? footer;
+  final BoxDecoration? decoration;
+  final List<KFDrawerItem> items;
+  final KFDrawerController? controller;
+  final double? drawerWidth;
+  final double? minScale;
+  final double? borderRadius;
+  final double? shadowBorderRadius;
+  final double? shadowOffset;
+  final bool scrollable;
+  final EdgeInsets? menuPadding;
+  final bool disableContentTap;
+  final Duration animationDuration;
+  final Curve slideCurve;
+  final Curve scaleCurve;
 
   static _KFDrawerState? of(BuildContext context) {
     final _KFDrawerInherited? inherited = context.dependOnInheritedWidgetOfExactType<_KFDrawerInherited>();
@@ -64,6 +63,7 @@ class KFDrawer extends StatefulWidget {
 
 class _KFDrawerInherited extends InheritedWidget {
   final _KFDrawerState drawerState;
+
   const _KFDrawerInherited({required Widget child, required this.drawerState}) : super(child: child);
 
   @override
@@ -98,10 +98,6 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
     setState(() {
       _menuOpened = false;
     });
-  }
-
-  _onMenuPressed() {
-    _menuOpened ? _close() : _open();
   }
 
   _finishDrawerAnimation() {
@@ -199,8 +195,9 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
             }
           } else {
             setState(() {
-              _isDraggingMenu = (_menuOpened && event.position.dx / MediaQuery.of(context).size.width >= _drawerWidth) ||
-                  (!_menuOpened && event.position.dx <= 8.0);
+              _isDraggingMenu =
+                  (_menuOpened && event.position.dx / MediaQuery.of(context).size.width >= _drawerWidth) ||
+                      (!_menuOpened && event.position.dx <= 8.0);
             });
           }
         },
@@ -271,7 +268,9 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
   }
 
   void close() => _close();
+
   void open() => _open();
+
   void toggle() => _menuOpened ? _close() : _open();
 
   @override
@@ -293,14 +292,14 @@ class _KFDrawer extends StatefulWidget {
     this.padding,
   }) : super(key: key);
 
-  Widget? header;
-  Widget? footer;
-  List<KFDrawerItem> items;
-  BoxDecoration? decoration;
-  bool scrollable;
-  EdgeInsets? padding;
+  final Widget? header;
+  final Widget? footer;
+  final List<KFDrawerItem> items;
+  final BoxDecoration? decoration;
+  final bool scrollable;
+  final EdgeInsets? padding;
 
-  AnimationController? animationController;
+  final AnimationController? animationController;
 
   @override
   __KFDrawerState createState() => __KFDrawerState();
@@ -362,16 +361,15 @@ class __KFDrawerState extends State<_KFDrawer> {
 }
 
 class KFDrawerItem extends StatelessWidget {
-  KFDrawerItem({this.onPressed, this.text, this.icon});
+  KFDrawerItem({this.onPressed, this.text, this.icon, this.alias, this.page});
 
   KFDrawerItem.initWithPage({this.onPressed, this.text, this.icon, this.alias, this.page});
 
   GestureTapCallback? onPressed;
-  Widget? text;
-  Widget? icon;
-
-  String? alias;
-  Widget? page;
+  final Widget? text;
+  final Widget? icon;
+  final String? alias;
+  final Widget? page;
 
   @override
   Widget build(BuildContext context) {
