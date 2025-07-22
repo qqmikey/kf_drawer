@@ -178,7 +178,6 @@ class _KFDrawerState extends State<KFDrawer> with TickerProviderStateMixin {
       end: BorderRadius.circular(_borderRadius),
     ).animate(CurvedAnimation(parent: animationController, curve: Curves.ease));
 
-    // Присваиваем методы контроллеру только здесь
     widget.controller?.open = _open;
     widget.controller?.close = _close;
     widget.controller?.toggle = toggle;

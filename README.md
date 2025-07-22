@@ -28,6 +28,40 @@ define page property on `KFDrawerItem`
 
 ##### You can use `ClassBuilder` for string based class init
 
+## KFDrawer control via InheritedWidget
+
+KFDrawer provides menu control from anywhere in the widget tree via a static method:
+
+```dart
+KFDrawer.of(context)?.open();   // Open drawer
+KFDrawer.of(context)?.close();  // Close drawer
+KFDrawer.of(context)?.toggle(); // Toggle drawer
+```
+
+### Example: menu button for open/close
+
+```dart
+IconButton(
+  icon: Icon(Icons.menu),
+  onPressed: () {
+    KFDrawer.of(context)?.toggle();
+  },
+)
+```
+
+### Example: change page and close drawer from any widget
+
+```dart
+onTap: () {
+  widget.controller?.page = MyPage();
+  KFDrawer.of(context)?.close();
+}
+```
+
+- No need to pass callbacks or controllers manually.
+- Drawer control is available in any KFDrawer descendant.
+- Everything works via Flutter context—clean, modern, convenient.
+
 ### Example
 
 ```dart
@@ -115,4 +149,3 @@ class _MainWidgetState extends State<MainWidget> {
     );
   }
 }
-```
