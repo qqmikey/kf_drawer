@@ -1,4 +1,4 @@
-package com.example.kf_drawer_example
+package com.qqmikey.kf_drawer_example
 
 import io.flutter.embedding.android.FlutterActivity
 

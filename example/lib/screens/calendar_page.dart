@@ -1,42 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
-class CalendarPage extends StatefulWidget {
+class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
 
   @override
-  State<CalendarPage> createState() => _CalendarPageState();
-}
-
-class _CalendarPageState extends State<CalendarPage> {
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color(0xFFF5C8FF),
+    return ColoredBox(
+      color: const Color(0xFFF5C8FF),
       child: SafeArea(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    child: Material(
-                      shadowColor: Colors.transparent,
-                      color: Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(Icons.menu, color: Colors.black),
-                        onPressed: () => KFDrawer.of(context)?.toggle(),
-                      ),
-                    ),
-                  ),
-                ],
+        child: Column(
+          children: <Widget>[
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () => KFDrawer.of(context)?.toggle(),
+                tooltip: 'Open navigation menu',
               ),
-              Expanded(
-                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[Text('Calendar')]),
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  'Calendar',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

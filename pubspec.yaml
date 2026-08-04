@@ -1,16 +1,26 @@
 name: kf_drawer
-description: Side menu (Drawer)
-version: 2.0.0
+description: A customizable animated side drawer for Flutter with controller, gesture, RTL, and multi-platform support.
+version: 2.1.0
 homepage: https://github.com/qqmikey/kf_drawer
+repository: https://github.com/qqmikey/kf_drawer
+issue_tracker: https://github.com/qqmikey/kf_drawer/issues
+
+topics:
+  - drawer
+  - navigation
+  - side-menu
+  - animation
+  - flutter
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
 dev_dependencies:
+  flutter_lints: ">=3.0.1 <7.0.0"
   flutter_test:
     sdk: flutter
-

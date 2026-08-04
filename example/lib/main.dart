@@ -5,19 +5,23 @@ import 'package:kf_drawer/kf_drawer.dart';
 import 'screens/auth_page.dart';
 import 'screens/calendar_page.dart';
 import 'screens/main_page.dart';
-import 'utils/class_builder.dart';
+import 'screens/settings_page.dart';
 
-void main() {
-  ClassBuilder.registerClasses();
-  runApp(MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: ThemeData(primarySwatch: Colors.blue), home: MainWidget());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const MainWidget(),
+      theme: ThemeData(
+        colorSchemeSeed: const Color(0xFF2C48AB),
+        useMaterial3: true,
+      ),
+    );
   }
 }
 
@@ -28,77 +32,97 @@ class MainWidget extends StatefulWidget {
   State<MainWidget> createState() => _MainWidgetState();
 }
 
-class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
-  late KFDrawerController _drawerController;
+class _MainWidgetState extends State<MainWidget> {
+  late final KFDrawerController _drawerController;
 
   @override
   void initState() {
     super.initState();
     _drawerController = KFDrawerController(
-      initialPage: ClassBuilder.fromString('MainPage'),
-      items: [
-        KFDrawerItem.initWithPage(
-          text: Text('MAIN', style: TextStyle(color: Colors.white)),
-          icon: Icon(Icons.home, color: Colors.white),
-          page: MainPage(),
+      initialPage: const MainPage(),
+      maintainPageHistory: true,
+      items: <KFDrawerItem>[
+        KFDrawerItem.withPage(
+          alias: 'main',
+          icon: const Icon(Icons.home, color: Colors.white),
+          page: const MainPage(),
+          text: const Text('MAIN', style: TextStyle(color: Colors.white)),
         ),
-        KFDrawerItem.initWithPage(
-          text: Text('CALENDAR', style: TextStyle(color: Colors.white)),
-          icon: Icon(Icons.calendar_today, color: Colors.white),
-          page: CalendarPage(),
+        KFDrawerItem.withPage(
+          alias: 'calendar',
+          icon: const Icon(Icons.calendar_today, color: Colors.white),
+          page: const CalendarPage(),
+          text: const Text('CALENDAR', style: TextStyle(color: Colors.white)),
         ),
-        KFDrawerItem.initWithPage(
-          text: Text('SETTINGS', style: TextStyle(color: Colors.white)),
-          icon: Icon(Icons.settings, color: Colors.white),
-          page: ClassBuilder.fromString('SettingsPage'),
+        KFDrawerItem.withPage(
+          alias: 'settings',
+          icon: const Icon(Icons.settings, color: Colors.white),
+          page: const SettingsPage(),
+          text: const Text('SETTINGS', style: TextStyle(color: Colors.white)),
         ),
       ],
-    );
+    )..addListener(_handleControllerChanged);
+  }
+
+  void _handleControllerChanged() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: KFDrawer(
-        //        borderRadius: 0.0,
-        //        shadowBorderRadius: 0.0,
-        //        menuPadding: EdgeInsets.all(0.0),
-        //        scrollable: true,
-        controller: _drawerController,
-        animationDuration: Duration(milliseconds: 280),
-        slideCurve: Curves.easeInOutCubic,
-        scaleCurve: Curves.easeInOutBack,
-        header: Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            width: MediaQuery.of(context).size.width * 0.6,
-            child: Image.asset('assets/logo.png', alignment: Alignment.centerLeft),
+    return PopScope<Object?>(
+      canPop: !_drawerController.canGoBack,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _drawerController.goBack();
+        }
+      },
+      child: Scaffold(
+        body: KFDrawer(
+          animationDuration: const Duration(milliseconds: 280),
+          centerScrollableItems: true,
+          controller: _drawerController,
+          footer: KFDrawerItem(
+            icon: const Icon(Icons.login, color: Colors.white),
+            onPressed: () {
+              Navigator.of(context).push(
+                CupertinoPageRoute<void>(
+                  builder: (context) => const AuthPage(),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+            text: const Text('SIGN IN', style: TextStyle(color: Colors.white)),
           ),
-        ),
-        footer: KFDrawerItem(
-          text: Text('SIGN IN', style: TextStyle(color: Colors.white)),
-          icon: Icon(Icons.input, color: Colors.white),
-          onPressed: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute(
-                fullscreenDialog: true,
-                builder: (BuildContext context) {
-                  return AuthPage();
-                },
-              ),
-            );
-          },
-        ),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color.fromRGBO(255, 255, 255, 1.0), Color.fromRGBO(44, 72, 171, 1.0)],
-            tileMode: TileMode.repeated,
+          footerPinned: true,
+          header: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Image.asset(
+              'assets/logo.png',
+              alignment: AlignmentDirectional.centerStart,
+              width: 180,
+            ),
+          ),
+          semanticLabel: 'Example navigation menu',
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              colors: <Color>[Color(0xFFFFFFFF), Color(0xFF2C48AB)],
+              end: Alignment.bottomRight,
+            ),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _drawerController
+      ..removeListener(_handleControllerChanged)
+      ..dispose();
+    super.dispose();
   }
 }

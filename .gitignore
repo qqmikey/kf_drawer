@@ -1,10 +1,14 @@
 .DS_Store
+*.iml
+/pubspec.lock
 .dart_tool/
 
 .packages
 .pub/
 
 build/
+coverage/
+doc/api/
 ios/.generated/
 ios/Flutter/Generated.xcconfig
 ios/Runner/GeneratedPluginRegistrant.*

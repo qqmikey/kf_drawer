@@ -1,0 +1,6 @@
+example/android/** linguist-generated=true
+example/ios/** linguist-generated=true
+example/linux/** linguist-generated=true
+example/macos/** linguist-generated=true
+example/web/** linguist-generated=true
+example/windows/** linguist-generated=true

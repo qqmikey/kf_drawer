@@ -1,37 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
-class MainPage extends StatefulWidget {
+class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  Widget build(BuildContext context) {
+    return const _ExamplePage(
+      backgroundColor: Color(0xFFC8E2FF),
+      label: 'Main',
+    );
+  }
 }
 
-class _MainPageState extends State<MainPage> {
+class _ExamplePage extends StatelessWidget {
+  const _ExamplePage({required this.backgroundColor, required this.label});
+
+  final Color backgroundColor;
+  final String label;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color(0xFFC8E2FF),
+    return ColoredBox(
+      color: backgroundColor,
       child: SafeArea(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    child: Material(
-                      shadowColor: Colors.transparent,
-                      color: Colors.transparent,
-                      child: IconButton(icon: Icon(Icons.menu, color: Colors.black), onPressed: () => KFDrawer.of(context)?.toggle()),
-                    ),
-                  ),
-                ],
+        child: Column(
+          children: <Widget>[
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () => KFDrawer.of(context)?.toggle(),
+                tooltip: 'Open navigation menu',
               ),
-              Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[Text('Main')])),
-            ],
-          ),
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

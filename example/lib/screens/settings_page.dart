@@ -1,40 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
-// ignore: must_be_immutable
-class SettingsPage extends StatefulWidget{
+class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color(0xFFC8C8FF),
+    return ColoredBox(
+      color: const Color(0xFFC8C8FF),
       child: SafeArea(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    child: Material(
-                      shadowColor: Colors.transparent,
-                      color: Colors.transparent,
-                      child: IconButton(icon: Icon(Icons.menu, color: Colors.black), onPressed:  () => KFDrawer.of(context)?.toggle()),
-                    ),
-                  ),
-                ],
+        child: Column(
+          children: <Widget>[
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () => KFDrawer.of(context)?.toggle(),
+                tooltip: 'Open navigation menu',
               ),
-              Expanded(
-                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[Text('Settings')]),
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  'Settings',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

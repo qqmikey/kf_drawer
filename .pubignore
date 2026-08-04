@@ -1,1 +1,13 @@
+.dart_tool/
+.github/
+.idea/
+build/
+coverage/
+doc/
+docs/
+test/
+*.iml
+.DS_Store
+example/**/.dart_tool/
+example/**/build/
 example/ios/Flutter/flutter_export_environment.sh
