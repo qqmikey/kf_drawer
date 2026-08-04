@@ -237,6 +237,11 @@ Use an item without `page` when the callback should fully own navigation.
 
 See the runnable [example](example/lib/main.dart) for a complete integration.
 
+## Support
+
+If KFDrawer saves you time, you can support its ongoing maintenance on
+[Buy Me a Coffee](https://buymeacoffee.com/qqmik).
+
 ## License
 
 KFDrawer is released under the [MIT License](LICENSE).
