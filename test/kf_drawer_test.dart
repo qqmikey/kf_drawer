@@ -463,10 +463,20 @@ void main() {
 
     testWidgets('dynamic controller items rebuild the visible menu',
         (tester) async {
+      const removedItem = KFDrawerItem(text: Text('Removed later'));
       final controller = KFDrawerController(
         initialPage: const ColoredBox(color: Colors.white),
+        items: const <KFDrawerItem>[removedItem],
       );
-      await tester.pumpWidget(_testApp(controller: controller));
+      await tester.pumpWidget(
+        _testApp(
+          centerScrollableItems: true,
+          controller: controller,
+        ),
+      );
+      controller.open?.call();
+      await tester.pumpAndSettle();
+      expect(find.text('Removed later'), findsOneWidget);
       expect(find.text('Added later'), findsNothing);
 
       controller.addItem(
@@ -474,6 +484,12 @@ void main() {
       );
       await tester.pump();
 
+      expect(find.text('Added later'), findsOneWidget);
+
+      expect(controller.removeItem(removedItem), isTrue);
+      await tester.pump();
+
+      expect(find.text('Removed later'), findsNothing);
       expect(find.text('Added later'), findsOneWidget);
     });
   });

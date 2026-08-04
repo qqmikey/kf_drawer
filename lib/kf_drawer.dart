@@ -325,7 +325,7 @@ class _KFDrawerState extends State<KFDrawer>
   }
 
   List<KFDrawerItem> _getDrawerItems() {
-    return widget.controller?.items ?? widget.items;
+    return List<KFDrawerItem>.of(widget.controller?.items ?? widget.items);
   }
 
   bool _opensFromLeft(BuildContext context) {
